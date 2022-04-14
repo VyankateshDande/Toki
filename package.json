@@ -1,0 +1,28 @@
+{
+  "name": "toki",
+  "version": "1.0.0",
+  "description": "A discord bot with a fun game and other features!",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VyankateshDande/Toki.git"
+  },
+  "keywords": [
+    "Discord Bot",
+    "Game",
+    "Economy"
+  ],
+  "author": "Fancy#3081",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VyankateshDande/Toki/issues"
+  },
+  "homepage": "https://github.com/VyankateshDande/Toki#readme",
+  "dependencies": {
+    "discord.js": "^13.6.0",
+    "dotenv": "^16.0.0"
+  }
+}
