@@ -11,7 +11,7 @@ const valid_cmds = [];
 dotenv.config()
 
 // Init bot
-const bot = new Discord.Client({intents:["GUILD_MESSAGES", "GUILDS", "GUILD_MESSAGE_REACTIONS", "GUILD_PRESENCES"]});
+const bot = new Discord.Client({intents:["GUILD_MESSAGES", "GUILDS", "GUILD_MESSAGE_REACTIONS", "GUILD_PRESENCES","GUILD_MEMBERS"]});
 bot.commands = new Discord.Collection();
 
 const commandfiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
