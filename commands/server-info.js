@@ -44,7 +44,7 @@ module.exports = {
                 {name:"Channels", value:`\`${guild.channels.channelCountWithoutThreads.toString()}\``, inline:true},
                 {name:"Roles", value:`\`${guild.roles.cache.toJSON().length}\``, inline:true},
 
-            ]
+            ],
         });
         message.reply({embeds:[server_info_embed]})
     }

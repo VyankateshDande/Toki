@@ -1,7 +1,20 @@
 module.exports = {
     name: 'user-info',
-    execute(message,args, Discord) {
-        let user = message.member;
+    async execute(message,args, Discord) {
+        let user
+        if (args[0]){
+            user = await message.guild.members.search({query:args[0]});
+            console.log(user);
+            if (user.toJSON().length == 0 ){
+                message.reply("Could not find the specified user!");
+                return;
+            }
+            user = await message.guild.members.fetch({user:user.toJSON()[0],withPresences:true,force:true});
+        }
+        else{
+            user = message.member
+        }
+        
         let roles = "";
         for (i in user.roles.cache.toJSON()){
             if (user.roles.cache.toJSON()[i]['name'] == '@everyone') continue;
@@ -13,8 +26,11 @@ module.exports = {
         let user_nick = user.nickname
         if(user_nick == null) user_nick=user.user.username;
 
-        let valid_status = {"dnd":"Do not disturb", "online":"Online", "idle":"Idle", "offline":"Offline"}
-
+        let valid_status = {"dnd":"Do not disturb", "online":"Online", "idle":"Idle", "offline":"Invisible"}
+        let user_status
+        if (user.presence === null) {user_status="Offline"}
+        else {user_status = valid_status[user.presence.status]}
+        const trueFalse = {"true":"Yes","false":"No"}
         let perms = ""
         for (i in user.permissions.toArray()){
             perms += `\`${user.permissions.toArray()[i].replace(/_/gi," ")}\`, `
@@ -23,17 +39,17 @@ module.exports = {
         const user_info_embed = new Discord.MessageEmbed({
             color:"#00ccff",
             timestamp:new Date(),
-            description:`\`Status:\` ${valid_status[user.presence.status]}`,
+            description:`\`Status:\` ${user_status}`,
             thumbnail:{
                 url:user.user.avatarURL({
                     dynamic:false,
                     format:"png",
-                    size:1024
+                    size:512   
                 }),
             },
             author:{
-                name:message.author.username,
-                iconURL:(message.author.avatarURL({
+                name:user.user.username,
+                iconURL:(user.user.avatarURL({
                     dynamic:false,
                     format:"png",
                     size:128
@@ -42,16 +58,25 @@ module.exports = {
             fields: [                
                 {name:"Username", value:`\`${user.user.tag}\``, inline: true},
                 {name:"Nickname", value:`\`${user_nick}\``, inline: true},
+                {name:"Is bot?", value:`\`${trueFalse[user.user.bot]}\``, inline: true},
+                
+                {name:"ID", value:`\`${user.user.id}\``, inline:false},
+                
+                {name:"Joined on", value:`\`${joinAtInfo}\``, inline: true},
+                {name:"Created on", value:`\`${createAtInfo}\``, inline: true},
                 
                 {name:"Roles", value:roles, inline: false},
 
-                {name:"ID", value:`\`${user.user.id}\``, inline:false},
-
-                {name:"Joined on", value:`\`${joinAtInfo}\``, inline: true},
-                {name:"Created on", value:`\`${createAtInfo}\``, inline: true},
-
-                {name:"Permissions", value:`\`${perms}\``, inline: false},
-            ]
+                {name:"Permissions", value:perms, inline: false},
+            ],
+            footer:{
+                text:`Requested by ${message.author.tag}`,
+                iconURL:message.author.avatarURL({
+                    dynamic:false,
+                    format:"png",
+                    size:64,
+                }),
+            }
         })
         message.reply({embeds:[user_info_embed]});
     }
