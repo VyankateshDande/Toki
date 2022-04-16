@@ -15,7 +15,7 @@ module.exports = {
             },
             fields:[
                 {name:"Servers", value:bot.guilds.cache.toJSON().length.toString(), inline:true},
-                {name:"Uptime", value:`${(bot.uptime / 360000).toString()} hours`}
+                {name:"Uptime", value:`${(bot.uptime / 3600000).toString()} hours`}
             ]
         })
         message.reply({embeds:[stat_embed]})
