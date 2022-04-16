@@ -11,7 +11,7 @@ const valid_cmds = [];
 dotenv.config()
 
 // Init bot
-const bot = new Discord.Client({intents:["GUILD_MESSAGES", "GUILDS", "GUILD_MESSAGE_REACTIONS", "GUILD_PRESENCES","GUILD_MEMBERS"]});
+const bot = new Discord.Client({intents:["GUILD_MESSAGES", "GUILDS", "GUILD_MESSAGE_REACTIONS", "GUILD_PRESENCES","GUILD_MEMBERS"], presence:{status:"idle", afk:false, activities:[{name:"<help",type:"PLAYING"}]}});
 bot.commands = new Discord.Collection();
 
 const commandfiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
@@ -34,7 +34,7 @@ bot.on('messageCreate', (message)=>{
 
     if (!valid_cmds.includes(command)) return;
 
-    bot.commands.get(command).execute(message, args, Discord);
+    bot.commands.get(command).execute(message, args, Discord, bot);
 });
 
 

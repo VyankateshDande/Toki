@@ -6,7 +6,7 @@ module.exports = {
             user = await message.guild.members.search({query:args[0]});
             console.log(user);
             if (user.toJSON().length == 0 ){
-                message.reply("Could not find the specified user!");
+                message.reply("Could not find the specified user! Try using their exact username or nickname. IDs do not work.");
                 return;
             }
             user = await message.guild.members.fetch({user:user.toJSON()[0],withPresences:true,force:true});

@@ -1,3 +1,5 @@
+const { MessageActionRow } = require("discord.js");
+
 module.exports = {
     name:"role-info",
     execute(message, args, Discord){
@@ -7,13 +9,17 @@ module.exports = {
             if(args[i] == args[0]) continue;
             args[0] +=` ${args[i]}`
         }
+        if (!args[0]){
+            message.reply("Please specify a role.")
+            return;
+        }
         for (i in guild.roles.cache.toJSON()){
             if (guild.roles.cache.toJSON()[i].name.toLowerCase() == args[0].toLowerCase()){
                 reqRole = guild.roles.cache.toJSON()[i];
             }
         }
         if(!reqRole) {
-            message.reply("Could not find the specified role!");
+            message.reply("Could not find the specified role! Try using the exact role name. IDs do not work.\nRole name is not case-sensitive. `RoLe` is the same as `role` or `ROLE`");
             return;
         }
 
