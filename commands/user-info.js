@@ -2,19 +2,41 @@ module.exports = {
     name: 'user-info',
     async execute(message,args, Discord) {
         let user
+        for (i in args){
+            if (args[0] == args[i]) continue;
+            args[0] += ` ${args[i]}`
+        }
         if (args[0]){
-            user = await message.guild.members.search({query:args[0]});
-            console.log(user);
-            if (user.toJSON().length == 0 ){
-                message.reply("Could not find the specified user! Try using their exact username or nickname. IDs do not work.");
-                return;
+            if (isNaN(parseInt(args[0]))){
+                if (args[0].startsWith("<@") && args[0].endsWith(">")){
+                    args[0] = args[0].slice(2,-1)
+                    if (args[0].startsWith("!")) args[0] = args.slice(0,1)
+                    user = await message.guild.members.fetch(args[0])
+                    if (user == undefined){
+                        message.reply("Specified user could not be found.")
+                    }
+                }
+                else{
+                    user = await message.guild.members.search({query:args[0]})
+                    if (user.toJSON().length == 0 ){
+                        message.reply("Specified user could not be found.");
+                        return;
+                    }
+                    user = await message.guild.members.fetch({user:user.toJSON()[0],withPresences:true,force:true});
+                }
             }
-            user = await message.guild.members.fetch({user:user.toJSON()[0],withPresences:true,force:true});
+            else {
+                user = await message.guild.members.fetch(args[0])
+
+                if (user == undefined) {
+                    message.reply("Specified user could not be found.")
+                    return
+                }
+            }
         }
         else{
             user = message.member
         }
-        
         let roles = "";
         for (i in user.roles.cache.toJSON()){
             if (user.roles.cache.toJSON()[i]['name'] == '@everyone') continue;
@@ -23,9 +45,6 @@ module.exports = {
         let joinAtInfo = `${user.joinedAt.getHours()}:${user.joinedAt.getMinutes()}, ${user.joinedAt.getDate()}/${user.joinedAt.getMonth()+1}/${user.joinedAt.getFullYear()}`;
         let createAtInfo = `${user.user.createdAt.getHours()}:${user.user.createdAt.getMinutes()}, ${user.user.createdAt.getDate()}/${user.user.createdAt.getMonth()+1}/${user.user.createdAt.getFullYear()}`;
         
-        let user_nick = user.nickname
-        if(user_nick == null) user_nick=user.user.username;
-
         let valid_status = {"dnd":"Do not disturb", "online":"Online", "idle":"Idle", "offline":"Invisible"}
         let user_status
         if (user.presence === null) {user_status="Offline"}
@@ -41,7 +60,7 @@ module.exports = {
             timestamp:new Date(),
             description:`\`Status:\` ${user_status}`,
             thumbnail:{
-                url:user.user.avatarURL({
+                url:user.user.displayAvatarURL({
                     dynamic:false,
                     format:"png",
                     size:512   
@@ -49,7 +68,7 @@ module.exports = {
             },
             author:{
                 name:user.user.username,
-                iconURL:(user.user.avatarURL({
+                iconURL:(user.user.displayAvatarURL({
                     dynamic:false,
                     format:"png",
                     size:128
@@ -57,7 +76,7 @@ module.exports = {
             },
             fields: [                
                 {name:"Username", value:`\`${user.user.tag}\``, inline: true},
-                {name:"Nickname", value:`\`${user_nick}\``, inline: true},
+                {name:"Nickname", value:`\`${user.displayName}\``, inline: true},
                 {name:"Is bot?", value:`\`${trueFalse[user.user.bot]}\``, inline: true},
                 
                 {name:"ID", value:`\`${user.user.id}\``, inline:false},

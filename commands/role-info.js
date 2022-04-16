@@ -2,25 +2,43 @@ const { MessageActionRow } = require("discord.js");
 
 module.exports = {
     name:"role-info",
-    execute(message, args, Discord){
+    async execute(message, args, Discord){
         let guild = message.guild;
-        let reqRole
-        for (i in args){
-            if(args[i] == args[0]) continue;
-            args[0] +=` ${args[i]}`
+
+        if (!guild.me.permissions.toArray().includes("MANAGE_ROLES")){
+            message.reply("I lack the following permissions to perform this action: Manage Roles.")
+            return
         }
         if (!args[0]){
             message.reply("Please specify a role.")
             return;
         }
-        for (i in guild.roles.cache.toJSON()){
-            if (guild.roles.cache.toJSON()[i].name.toLowerCase() == args[0].toLowerCase()){
-                reqRole = guild.roles.cache.toJSON()[i];
+
+        let reqRole
+        if (args[0].startsWith("<@&") && args[0].endsWith(">")){
+            args[0] = args[0].slice(3,-1)
+            reqRole = await message.guild.roles.fetch(args[0])
+            if (reqRole == undefined){
+                message.reply("Specified role could not be found.")
+            }
+        }
+        else if (!isNaN(parseInt(args[0]))){
+            reqRole = await message.guild.roles.fetch(args[0])
+        }
+        else {
+            for (i in args){
+                if(args[i] == args[0]) continue;
+                args[0] +=` ${args[i]}`
+            }
+            for (i in guild.roles.cache.toJSON()){
+                if (guild.roles.cache.toJSON()[i].name.toLowerCase() == args[0].toLowerCase()){
+                    reqRole = guild.roles.cache.toJSON()[i];
+                }
             }
         }
         if(!reqRole) {
-            message.reply("Could not find the specified role! Try using the exact role name. IDs do not work.\nRole name is not case-sensitive. `RoLe` is the same as `role` or `ROLE`");
-            return;
+            message.reply("Specified role could not be found.")
+            return
         }
 
         const trueFalse = {"true":"Yes","false":"No"}
@@ -47,7 +65,7 @@ module.exports = {
             timestamp:new Date(),
             author:{
                 name:message.author.username,
-                iconURL:(message.author.avatarURL({
+                iconURL:(message.author.displayAvatarURL({
                     dynamic:false,
                     format:"png",
                     size:128

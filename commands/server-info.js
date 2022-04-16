@@ -24,7 +24,7 @@ module.exports = {
             },
             author:{
                 name:message.author.username,
-                iconURL:(message.author.avatarURL({
+                iconURL:(message.author.displayAvatarURL({
                     dynamic:false,
                     format:"png",
                     size:128
