@@ -34,6 +34,23 @@ bot.on('messageCreate', (message)=>{
 
     if (!valid_cmds.includes(command)) return;
 
+    let missing_perms = ""
+
+
+
+    const reqPerms = ["EMBED_LINKS", "MANAGE_ROLES", "READ_MESSAGE_HISTORY"]
+
+    for (i in reqPerms){
+        if (!(message.guild.me.permissions.toArray().includes(reqPerms[i]))){
+            missing_perms += `\`${reqPerms[i]}\`, `
+        }
+    }
+
+    if (missing_perms){
+        message.channel.send(`I lack the following permissions to function properly: ${missing_perms}\nMessage history is needed to reply to messages. Toki does not log any messages.`)
+        return
+    }
+
     bot.commands.get(command).execute(message, args, Discord, bot);
 });
 
