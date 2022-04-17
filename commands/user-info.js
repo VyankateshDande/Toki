@@ -42,6 +42,7 @@ module.exports = {
             if (user.roles.cache.toJSON()[i]['name'] == '@everyone') continue;
             roles += `\`${user.roles.cache.toJSON()[i]['name']}\`, `;
         }
+        if (!roles) roles = "`None`"
         let joinAtInfo = `${user.joinedAt.getHours()}:${user.joinedAt.getMinutes()}, ${user.joinedAt.getDate()}/${user.joinedAt.getMonth()+1}/${user.joinedAt.getFullYear()}`;
         let createAtInfo = `${user.user.createdAt.getHours()}:${user.user.createdAt.getMinutes()}, ${user.user.createdAt.getDate()}/${user.user.createdAt.getMonth()+1}/${user.user.createdAt.getFullYear()}`;
         

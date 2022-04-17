@@ -47,6 +47,7 @@ module.exports = {
         for (i in reqRole.permissions.toArray()){
             perms += `\`${reqRole.permissions.toArray()[i].replace(/_/gi," ")}\`, `
         }
+        if (!perms) perms = "None"
 
         let color,role_desc
         if (reqRole.color){
