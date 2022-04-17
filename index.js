@@ -2,6 +2,7 @@
 const Discord = require('discord.js');
 const dotenv = require('dotenv');
 const fs = require('fs');
+const axios = require('axios')
 
 // Constants
 const prefix = '<';
@@ -36,8 +37,6 @@ bot.on('messageCreate', (message)=>{
 
     let missing_perms = ""
 
-
-
     const reqPerms = ["EMBED_LINKS", "MANAGE_ROLES", "READ_MESSAGE_HISTORY"]
 
     for (i in reqPerms){
@@ -51,7 +50,7 @@ bot.on('messageCreate', (message)=>{
         return
     }
 
-    bot.commands.get(command).execute(message, args, Discord, bot);
+    bot.commands.get(command).execute(message, args, Discord, bot, axios);
 });
 
 

@@ -1,0 +1,29 @@
+module.exports = {
+    name:"duck",
+    async execute(message, args, Discord, bot, axios){
+        const duck_pic_req = await axios.get(('https://random-d.uk/api/random?type=jpg'))
+        if (duck_pic_req.data.url == undefined){
+            message.reply("Something went wrong. Try again later.")
+            return
+        }
+        const duck_pic = duck_pic_req.data.url
+        const duckpic_embed = new Discord.MessageEmbed({
+            color:"#00ccff",
+            title:"Duck <3",
+            timestamp:new Date(),
+            image:{
+                url:duck_pic
+            },
+            footer:{
+                text:`Requested by ${message.author.tag}`,
+                iconURL:message.author.avatarURL({
+                    dynamic:false,
+                    format:"png",
+                    size:64,
+                }),
+            }
+        })
+        message.reply({embeds:[duckpic_embed]})
+        return
+    }
+}
