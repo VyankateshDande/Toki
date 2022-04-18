@@ -6,7 +6,7 @@ module.exports = {
         let guild = message.guild;
 
         if (!guild.me.permissions.toArray().includes("MANAGE_ROLES")){
-            message.reply("I lack the following permissions to perform this action: Manage Roles.")
+            message.reply("I need the following permissions to perform this action: Manage Roles.")
             return
         }
         if (!args[0]){
