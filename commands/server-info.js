@@ -1,6 +1,6 @@
 module.exports = {
     name:"server-info",
-    execute(message, args, Discord){
+    execute(message, args, Discord, bot, axios, database, announcement){
         const guild = message.guild;
         let guild_desc = guild.description;
         if (!guild_desc) guild_desc = "Not set";
@@ -46,6 +46,6 @@ module.exports = {
 
             ],
         });
-        message.reply({embeds:[server_info_embed]})
+        message.reply({embeds:[announcement, server_info_embed]})
     }
 }

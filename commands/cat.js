@@ -1,6 +1,6 @@
 module.exports = {
     name:"cat",
-    async execute(message, args, Discord, bot, axios){
+    async execute(message, args, Discord, bot, axios, database, announcement){
         const cat_pic_req = await axios.get(('https://cataas.com/cat?json=true&tags=cute'))
         if (cat_pic_req.data.url == undefined){
             message.reply("Something went wrong. Try again later.")
@@ -23,7 +23,7 @@ module.exports = {
                 }),
             }
         })
-        message.reply({embeds:[catpic_embed]})
+        message.reply({embeds:[announcement, catpic_embed]})
         return
     }
 }

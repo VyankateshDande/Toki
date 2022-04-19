@@ -1,6 +1,6 @@
 module.exports = {
     name:"help",
-    execute(message, args, Discord){
+    execute(message, args, Discord, bot, axios, database, announcement){
         const help_embed = new Discord.MessageEmbed({
             color:"#00ccff",
             timestamp:new Date(),
@@ -26,6 +26,6 @@ module.exports = {
                 
             ]
         })
-        message.reply({embeds:[help_embed]})
+        message.reply({embeds:[announcement, help_embed]})
     }
 }

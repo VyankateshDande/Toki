@@ -1,6 +1,6 @@
 module.exports = {
     name: 'user-info',
-    async execute(message,args, Discord) {
+    async execute(message,args, Discord, bot, axios, database, announcement) {
         let user
         for (i in args){
             if (args[0] == args[i]) continue;
@@ -98,6 +98,6 @@ module.exports = {
                 }),
             }
         })
-        message.reply({embeds:[user_info_embed]});
+        message.reply({embeds:[announcement, user_info_embed]});
     }
 }

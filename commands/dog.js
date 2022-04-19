@@ -1,6 +1,6 @@
 module.exports = {
     name:"dog",
-    async execute(message, args, Discord, bot, axios){
+    async execute(message, args, Discord, bot, axios, database, announcement){
         let dog_pic
         const dog_pic_req = await axios.get(('https://dog.ceo/api/breeds/image/random'))
         if (dog_pic_req.status == false) {
@@ -26,7 +26,7 @@ module.exports = {
                 }),
             }
         })
-        message.reply({embeds:[dogpic_embed]})
+        message.reply({embeds:[announcement, dogpic_embed]})
         return
     }
 }

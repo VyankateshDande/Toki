@@ -1,6 +1,6 @@
 module.exports = {
     name:"panda",
-    async execute(message, args, Discord, bot, axios){
+    async execute(message, args, Discord, bot, axios, database, announcement){
         const panda_pic_req = await axios.get(('https://some-random-api.ml/img/panda'))
         if (panda_pic_req.data.link == undefined){
             message.reply("Something went wrong. Try again later.")
@@ -22,7 +22,7 @@ module.exports = {
                 }),
             }
         })
-        message.reply({embeds:[pandapic_embed]})
+        message.reply({embeds:[announcement, pandapic_embed]})
         return
     }
 }
