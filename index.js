@@ -67,5 +67,15 @@ bot.on('guildCreate', async (guild)=>{
     dm.send(`New server: ${guild.name}`)
 });
 
+bot.on("guildDelete", async guild =>{
+    database
+        .query("DELETE FROM server_info WHERE server_id=$1", [guild.id])
+        .then(console.log(`New server: ${guild.name}`))
+        .catch(e =>{console.error(err)});
+    const owner = await bot.users.fetch('912351813041262662')
+    const dm = await owner.createDM()
+
+    dm.send(`New server: ${guild.name}`)
+})
 
 bot.login(process.env.TOKEN);
