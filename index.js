@@ -2,24 +2,30 @@
 const Discord = require('discord.js');
 const dotenv = require('dotenv');
 const fs = require('fs');
-const axios = require('axios')
+const axios = require('axios');
+const pg = require('pg')
 
 // Constants
 const prefix = '<';
 const valid_cmds = [];
+const database = pg.Pool()
+
 
 //Init env variables
 dotenv.config()
 
 // Init bot
-const bot = new Discord.Client({intents:["GUILD_MESSAGES", "GUILDS", "GUILD_MESSAGE_REACTIONS", "GUILD_PRESENCES","GUILD_MEMBERS"], presence:{status:"idle", afk:false, activities:[{name:"<help",type:"PLAYING"}]}});
+const bot = new Discord.Client({intents:["GUILD_MESSAGES", "GUILDS", "GUILD_MESSAGE_REACTIONS", "GUILD_PRESENCES","GUILD_MEMBERS", "DIRECT_MESSAGES", "GUILD_BANS"], presence:{status:"idle", afk:false, activities:[{name:"<help",type:"PLAYING"}]}});
 bot.commands = new Discord.Collection();
 
-const commandfiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
-for (const file of commandfiles){
-    const command = require(`./commands/${file}`);
-    bot.commands.set(command.name, command)
-    valid_cmds.push(command.name)
+const moduleFolder = fs.readdirSync('./commands/');
+for (const cmdModule of moduleFolder){
+    const commandfiles = fs.readdirSync(`./commands/${cmdModule}`).filter(file => file.endsWith('.js'));
+    for (file of commandfiles){
+        const command = require(`./commands/${cmdModule}/${file}`);
+        bot.commands.set(command.name, command)
+        valid_cmds.push(command.name)
+    }
 }
 
 // Bot code
