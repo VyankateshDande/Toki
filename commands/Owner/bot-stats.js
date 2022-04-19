@@ -6,7 +6,7 @@ module.exports = {
         let bot_guilds = ""
 
         for (i in bot.guilds.cache.toJSON()){
-            bot_guilds += `\`${bot.guilds.cache.toJSON()[i].name}\` - ${bot.guilds.cache.toJSON()[i].memberCount},\n`
+            bot_guilds += `\`${bot.guilds.cache.toJSON()[i].name}\`(${bot.guilds.cache.toJSON()[i].id}) - ${bot.guilds.cache.toJSON()[i].memberCount},\n`
         }
 
         const stat_embed = new Discord.MessageEmbed({
