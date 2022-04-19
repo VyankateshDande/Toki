@@ -2,31 +2,20 @@
 const Discord = require('discord.js');
 const dotenv = require('dotenv');
 const fs = require('fs');
-<<<<<<< Updated upstream
-const axios = require('axios')
-=======
 const axios = require('axios');
 const pg = require('pg');
->>>>>>> Stashed changes
 
 // Constants
 const prefix = '<';
 const valid_cmds = [];
-<<<<<<< Updated upstream
-=======
 const database = new pg.Pool()
 
->>>>>>> Stashed changes
 
 //Init env variables
 dotenv.config()
 
 // Init bot
-<<<<<<< Updated upstream
-const bot = new Discord.Client({intents:["GUILD_MESSAGES", "GUILDS", "GUILD_MESSAGE_REACTIONS", "GUILD_PRESENCES","GUILD_MEMBERS"], presence:{status:"idle", afk:false, activities:[{name:"<help",type:"PLAYING"}]}});
-=======
 const bot = new Discord.Client({intents:["GUILD_MESSAGES", "GUILDS", "GUILD_PRESENCES","GUILD_MEMBERS", "DIRECT_MESSAGES", "GUILD_BANS"], presence:{status:"idle", afk:false, activities:[{name:"<help",type:"PLAYING"}]}});
->>>>>>> Stashed changes
 bot.commands = new Discord.Collection();
 
 const commandfiles = fs.readdirSync('./commands/').filter(file => file.endsWith('.js'));
