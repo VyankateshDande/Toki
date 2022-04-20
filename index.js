@@ -31,18 +31,19 @@ for (const file of commandfiles){
     valid_cmds.push(command.name)
 }
 
+bot.server_info = new Discord.Collection();
+const server_data = await database
+    .query("SELECT * FROM server_info")
+    .then(data => {
+        for (i in data.rows){
+            bot.server_info.set(data.rows[i].server_id, data.rows[i])
+        }
+    })
+    .catch(err => {console.error(err);});
+
 // Bot code
 bot.once('ready', async (Client) => {
     console.log("Ready!");
-    bot.server_info = new Discord.Collection();
-    const server_data = await database
-        .query("SELECT * FROM server_info")
-        .then(data => {
-            for (i in data.rows){
-                bot.server_info.set(data.rows[i].server_id, data.rows[i])
-            }
-        })
-        .catch(err => {console.error(err);});
     
 });
 
