@@ -32,7 +32,7 @@ for (const file of commandfiles){
 }
 
 bot.server_info = new Discord.Collection();
-const server_data = await database
+const server_data = database
     .query("SELECT * FROM server_info")
     .then(data => {
         for (i in data.rows){
@@ -63,7 +63,7 @@ bot.on('messageCreate', (message)=>{
     const reqPerms = ["EMBED_LINKS", "READ_MESSAGE_HISTORY"]
 
     for (i in reqPerms){
-        if (!(message.guild.me.permissions.toArray().includes(reqPerms[i]))){
+        if (!(message.guild.me.permissions.includes(reqPerms[i]))){
             missing_perms += `\`${reqPerms[i]}\`, `
         }
     }
