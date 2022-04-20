@@ -63,7 +63,7 @@ bot.on('messageCreate', (message)=>{
     const reqPerms = ["EMBED_LINKS", "READ_MESSAGE_HISTORY"]
 
     for (i in reqPerms){
-        if (!(message.guild.me.permissions.includes(reqPerms[i]))){
+        if (!(message.guild.me.permissions.has(reqPerms[i]))){
             missing_perms += `\`${reqPerms[i]}\`, `
         }
     }
