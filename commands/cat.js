@@ -1,6 +1,6 @@
 module.exports = {
     name:"cat",
-    async execute(message, args, Discord, bot, axios, database, announcement){
+    async execute(message, args, Discord, bot, axios, database, embeds){
         const cat_pic_req = await axios.get(('https://some-random-api.ml/img/cat'))
         if (cat_pic_req.data.link == undefined){
             message.reply("Something went wrong. Try again later.")
@@ -22,7 +22,8 @@ module.exports = {
                 }),
             }
         })
-        message.reply({embeds:[announcement, catpic_embed]})
+        embeds.push(catpic_embed)
+        message.reply({embeds:embeds})
         return
     }
 }

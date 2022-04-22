@@ -74,12 +74,13 @@ bot.on('messageCreate', (message)=>{
         return
     }
     console.log(`[${message.author.username}] in [${message.guild.name}] : ${message.content}\n`);
-    const announcement = new Discord.MessageEmbed({
-        color:"#9966ff",
-        description:"You can now set custom prefix! Use `<setprefix` to set custom prefix.\nThis announcement will be shown for 72 hours after which it will be removed."
-    })
+    // const announcement = new Discord.MessageEmbed({
+    //     color:"#9966ff",
+    //     description:"You can now set custom prefix! Use `<setprefix` to set custom prefix.\nThis announcement will be shown for 72 hours after which it will be removed."
+    // })
+    let embeds = []
 
-    bot.commands.get(command).execute(message, args, Discord, bot, axios, database, announcement);
+    bot.commands.get(command).execute(message, args, Discord, bot, axios, database, embeds);
 });
 
 bot.on('guildCreate', async (guild)=>{

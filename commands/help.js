@@ -1,6 +1,6 @@
 module.exports = {
     name:"help",
-    execute(message, args, Discord, bot, axios, database, announcement){
+    execute(message, args, Discord, bot, axios, database, embeds){
         const help_embed = new Discord.MessageEmbed({
             description:"Please replace `<` with your custom prefix in case you have set one for your server.",
             color:"#00ccff",
@@ -28,6 +28,7 @@ module.exports = {
                 
             ]
         })
-        message.reply({embeds:[announcement, help_embed]})
+        embeds.push(help_embed)
+        message.reply({embeds:embeds})
     }
 }

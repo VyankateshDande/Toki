@@ -2,7 +2,7 @@ const { MessageActionRow } = require("discord.js");
 
 module.exports = {
     name:"role-info",
-    async execute(message, args, Discord, bot, axios, database, announcement){
+    async execute(message, args, Discord, bot, axios, database, embeds){
         let guild = message.guild;
 
         if (!guild.me.permissions.toArray().includes("MANAGE_ROLES")){
@@ -80,7 +80,7 @@ module.exports = {
                 {name:"Permissions", value:perms, inline:false}
             ],
         });
-
-        message.reply({embeds:[announcement, role_info_embed]})
+        embeds.push(role_info_embed)
+        message.reply({embeds:embeds})
     }
 }
