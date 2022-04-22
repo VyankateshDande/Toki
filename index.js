@@ -38,6 +38,7 @@ const server_data = database
         for (i in data.rows){
             bot.server_info.set(data.rows[i].server_id, data.rows[i])
         }
+        bot.login(process.env.TOKEN);
     })
     .catch(err => {console.error(err);});
 
@@ -104,4 +105,4 @@ bot.on("guildDelete", async guild =>{
     dm.send(`Server count update: ${bot.guilds.cache.size}(-1)`)
 })
 
-bot.login(process.env.TOKEN);
+
