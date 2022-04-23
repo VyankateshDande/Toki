@@ -90,10 +90,19 @@ bot.on('guildCreate', async (guild)=>{
         .query("INSERT INTO server_info (server_id) VALUES($1)", [guild.id])
         .then(console.log(`Server count update: ${bot.guilds.cache.size}(+\`${guild.name}\`)`))
         .catch(err =>{console.error(err)});
-    const owner = await bot.users.fetch('912351813041262662')
-    const dm = await owner.createDM()
-
-    dm.send(`Server count update: ${bot.guilds.cache.size}(+\`${guild.name}\`)`)
+    bot.users
+        .fetch('912351813041262662')
+        .then(user => {
+            user
+                .createDM()
+                .then(dm => {
+                    dm
+                        .send(`Server count update: ${bot.guilds.cache.size}(+\`${guild.name}\`)`)
+                })
+        })
+        .catch(err => {
+            console.err(err)    
+        })
     return
 });
 
