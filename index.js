@@ -83,7 +83,7 @@ bot.on('messageCreate', (message)=>{
     bot.commands.get(command).execute(message, args, Discord, bot, axios, database, embeds);
 });
 
-bot.on('guildCreate', async (guild)=>{
+bot.on('guildCreate', (guild)=>{
     bot.server_info.set(guild.id, {server_id:guild.id,prefix:"<",})
     console.log(bot.server_info)
     database
