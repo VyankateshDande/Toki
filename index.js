@@ -94,6 +94,7 @@ bot.on('guildCreate', async (guild)=>{
     const dm = await owner.createDM()
 
     dm.send(`Server count update: ${bot.guilds.cache.size}(+\`${guild.name}\`)`)
+    return
 });
 
 bot.on("guildDelete", async guild =>{
