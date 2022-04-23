@@ -49,7 +49,7 @@ bot.once('ready', async (Client) => {
 });
 
 bot.on('messageCreate', (message)=>{
-
+    
     let prefix = bot.server_info.get(message.guild.id).prefix;
 
     if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -84,11 +84,12 @@ bot.on('messageCreate', (message)=>{
 });
 
 bot.on('guildCreate', async (guild)=>{
+    bot.server_info.set(guild.id, {server_id:guild.id,prefix:"<",})
+    console.log(bot.server_info)
     database
         .query("INSERT INTO server_info (server_id) VALUES($1)", [guild.id])
         .then(console.log(`Server count update: ${bot.guilds.cache.size}(+\`${guild.name}\`)`))
         .catch(err =>{console.error(err)});
-    bot.server_info.set(guild.id, {server_id:guild.id,prefix:"<",})
     const owner = await bot.users.fetch('912351813041262662')
     const dm = await owner.createDM()
 
