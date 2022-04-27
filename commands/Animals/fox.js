@@ -1,21 +1,20 @@
 module.exports = {
-    name:"dog",
+    name:"fox",
+    module:"Animals",
+    description:"Gives a cute picture of a fox and a random fox fact!",
     async execute(message, args, Discord, bot, axios, database, embeds){
-        let dog_pic
-        const dog_pic_req = await axios.get(('https://dog.ceo/api/breeds/image/random'))
-        if (dog_pic_req.status == false) {
+        const fox_pic_req = await axios.get(('https://some-random-api.ml/animal/fox'))
+        if (fox_pic_req.data.image == undefined){
             message.reply("Something went wrong. Try again later.")
             return
         }
-        else{
-            dog_pic = dog_pic_req.data['message']
-        }
-        const dogpic_embed = new Discord.MessageEmbed({
-            title:"Dog <3",
+        const foxpic_embed = new Discord.MessageEmbed({
+            title:"Fox",
+            description:fox_pic_req.data.fact,
             color:"#00ccff",
             timestamp:new Date(),
             image:{
-                url:dog_pic
+                url:fox_pic_req.data.image
             },
             footer:{
                 text:`Requested by ${message.author.tag}`,
@@ -26,7 +25,7 @@ module.exports = {
                 }),
             }
         })
-        embeds.push(dogpic_embed)
+        embeds.push(foxpic_embed)
         message.reply({embeds:embeds})
         return
     }

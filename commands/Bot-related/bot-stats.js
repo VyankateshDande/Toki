@@ -1,14 +1,8 @@
 module.exports = {
     name:"bot-stats",
+    module:"Bot-related Information",
+    description:"Gives statistics about the bot(uptime, server count, member count)",
     execute(message, args, Discord, bot){
-        if (message.author.id != 912351813041262662n) return;
-
-        let bot_guilds = ""
-
-        for (i in bot.guilds.cache.toJSON()){
-            bot_guilds += `\`${bot.guilds.cache.toJSON()[i].name}\`(${bot.guilds.cache.toJSON()[i].id}) - ${bot.guilds.cache.toJSON()[i].memberCount},\n`
-        }
-
         const stat_embed = new Discord.MessageEmbed({
             color:"#00ccff",
             thumbnail:{
@@ -29,12 +23,10 @@ module.exports = {
             },
             fields:[
                 {name:"Bot name", value:bot.user.username, inline:true},
+                {name:"Command count", value:`${bot.valid_cmds.length}`, inline:true},
                 {name:"Uptime", value:`${(bot.uptime / 3600000).toFixed(3).toString()} hours`, inline:true},
-                {name:"\u200b", value:"\u200b", inline:true},
                 {name:"Server count", value:bot.guilds.cache.toJSON().length.toString(), inline:true},
                 {name:"Users", value:bot.users.cache.toJSON().length.toString(), inline:true},
-                {name:"\u200b", value:"\u200b", inline:true},
-                {name:"Servers", value:bot_guilds, inline: false}
 
             ]
         })

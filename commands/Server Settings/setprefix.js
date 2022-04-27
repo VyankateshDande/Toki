@@ -1,5 +1,7 @@
 module.exports = {
     name:"setprefix",
+    module:"Server settings",
+    description:"Set a custom prefix for your server.",
     async execute(message, args, Discord, bot, axios, database, announcement){
 
         if (!args[0]){

@@ -1,5 +1,7 @@
 module.exports = {
     name:"server-info",
+    module:"Information",
+    description:"Provides information about the server",
     execute(message, args, Discord, bot, axios, database, embeds){
         const guild = message.guild;
         let guild_desc = guild.description;
@@ -9,6 +11,13 @@ module.exports = {
         for (i in guild.members.cache.toJSON()){
             if (guild.members.cache.toJSON()[i].user.bot){ bots+=1 }
             else {humans+=1}
+        }
+        let features = ""
+        for (i in guild.features){
+            features += `\`${guild.features[i]}\`, `
+        }
+        if (!features){
+            features = "`None`"
         }
 
         const server_info_embed = new Discord.MessageEmbed({
@@ -43,6 +52,8 @@ module.exports = {
 
                 {name:"Channels", value:`\`${guild.channels.channelCountWithoutThreads.toString()}\``, inline:true},
                 {name:"Roles", value:`\`${guild.roles.cache.toJSON().length}\``, inline:true},
+
+                {name:"Features", value:features, inline:false}
 
             ],
         });

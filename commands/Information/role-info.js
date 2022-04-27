@@ -2,6 +2,8 @@ const { MessageActionRow } = require("discord.js");
 
 module.exports = {
     name:"role-info",
+    module:"Information",
+    description:"Gives information related to a role.",
     async execute(message, args, Discord, bot, axios, database, embeds){
         let guild = message.guild;
 

@@ -23,6 +23,7 @@
   "homepage": "https://github.com/VyankateshDande/Toki#readme",
   "dependencies": {
     "axios": "^0.26.1",
+    "blapi": "^2.2.2",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
     "node-fetch": "^3.2.3",

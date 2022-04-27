@@ -1,5 +1,7 @@
 module.exports = {
     name: 'user-info',
+    module:"Information",
+    description:"Gives information about specified user or about the author if no user is specified.",
     async execute(message,args, Discord, bot, axios, database, embeds) {
         let user
         for (i in args){
