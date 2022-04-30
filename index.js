@@ -4,6 +4,10 @@ const blapi = require('blapi')
 const fs = require('fs');
 const axios = require('axios');
 const pg = require('pg');
+const { createClient } = require('redis')
+
+const redis = createClient({url:"redis://default:7butPFn6knyslDmceG8I@containers-us-west-46.railway.app:7698"})
+redis.connect()
 
 //Init env variables
 require('dotenv').config()
@@ -112,7 +116,7 @@ bot.on('messageCreate', (message)=>{
     // })
     let embeds = []
 
-    bot.commands.get(command).execute(message, args, Discord, bot, axios, database, embeds);
+    bot.commands.get(command).execute(message, args, Discord, bot, axios, database, embeds, redis);
 });
 
 bot.on('guildCreate', (guild)=>{
