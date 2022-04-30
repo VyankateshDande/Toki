@@ -15,7 +15,7 @@ module.exports = {
             user_info.last_work = parseInt(user_info.last_work)
         }
         if ((Date.now() - user_info.last_work) < 900000){
-            message.reply(`You need to wait ${15 - Math.floor(((Date.now() - user_info.last_work))/60000)}m ${Math.floor(((Date.now() - user_info.last_work)%60000)/1000)}s to work.`)
+            message.reply(`You need to wait ${15 - Math.floor(((Date.now() - user_info.last_work))/60000)}m ${60 - Math.floor(((Date.now() - user_info.last_work)%60000)/1000)}s to work.`)
             return
         }
         const income = Math.floor(Math.random()*100 + 100);
