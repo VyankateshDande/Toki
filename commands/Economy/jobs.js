@@ -6,8 +6,10 @@ module.exports = {
         const jobs = require('./jobs.json');
         if (!args[0]) {
             let embed_fields = []
+            let job_no = 1
             for (eachjob of jobs) {
-                embed_fields.push({name:eachjob.name, value:`Pays ${eachjob.income} on work. Has a cooldown of ${eachjob.cooldown} minutes.`})
+                embed_fields.push({name:`${job_no}. ${eachjob.name}`, value:`Pay: ${eachjob.income}\nCooldown: ${eachjob.cooldown} minutes\nMinimum net worth: ${eachjob.min_net}\nPrice: ${eachjob.price}`, inline:true});
+                job_no ++
             }
             const jobs_embed = new Discord.MessageEmbed({
                 color:"#00ccff",
@@ -24,6 +26,9 @@ module.exports = {
             })
             embeds.push(jobs_embed)
             message.reply({embeds:embeds})
+        }
+        else if (args[0] != "apply") {
+            return
         }
     }
 }

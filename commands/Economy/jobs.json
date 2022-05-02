@@ -4,6 +4,7 @@
         "cooldown":10,
         "income":1000,
         "work_message":"You sell some earthern pots for 1000!",
+        "price":1000,
         "min_net":2500
     },
     {
@@ -11,55 +12,63 @@
         "cooldown":15,
         "income":2000,
         "work_message":"You went to forest and found some dead trees. You managed to craft them into planks and sold them for 2000!",
-        "min_net":5000
+        "price":5000,
+        "min_net":7500
     },
     {
         "name":"Garbage Collector",
         "cooldown":20,
         "income":3500,
         "work_message":"You collected the neighbourhood's garbage and sold it for 3500!",
-        "min_net":10000
+        "price":15000,
+        "min_net":20000
     },
     {
         "name":"Janitor",
         "cooldown":30,
         "income":6000,
         "work_message":"You cleaned the Bank's floor and got paid 6000!",
-        "min_net":20000
+        "price":35000,
+        "min_net":45000
     },
     {
         "name":"Farmer",
         "cooldown":40,
         "income":10000,
         "work_message":"You worked hard and grew some grains. They sold for 10000!",
-        "min_net":40000
+        "price":75000,
+        "min_net":90000
     },
     {
         "name":"Merchant",
         "cooldown":45,
         "income":15000,
-        "work_message":"You acted as the middle man for two disctant villages and gained a profit of 15000!",
-        "min_net":75000
+        "work_message":"You acted as the middle man for two distant villages and gained a profit of 15000!",
+        "price":200000,
+        "min_net":225000
     },
     {
         "name":"Teacher",
         "cooldown":60,
         "income":25000,
         "work_message":"You taught the local millionaire how to do math and he paid you 25000!",
-        "min_net":100000
+        "price":500000,
+        "min_net":600000
     },
     {
         "name":"Doctor",
         "cooldown":60,
         "income":30000,
         "work_message":"You cured some villagers and  they paid you 30000 for it!",
-        "min_net":150000
+        "price":1000000,
+        "min_net":1225000
     },
     {
         "name":"Business Owner",
         "cooldown": 90,
         "income":75000,
         "work_message":"Your business thrived and made a profit of 75000!",
-        "min_net":200000
+        "price":7500000,
+        "min_net":10000000
     }
 ]
