@@ -13,24 +13,25 @@ module.exports = {
             if (eachJob.name == user_info.job) {
                 job = eachJob;
             }
+            if (!job) {
+                job = jobs[0]
+                redis.sendCommand(["hset", user_id, "job", "Potter"])
+            }
         }
-
-        let income = 0
-        if (!job) {
-            job = jobs[0]
-            redis.sendCommand(["hset", user_id, "job", "Potter"])
-            console.log("test");
-        }
-        else {
-            income = job.income
-        }
+        const income = job.income
+        
         
         if ((Date.now() - user_info.last_work) < (job.cooldown * 1000*60)){
             message.reply(`You need to wait ${Math.floor(job.cooldown - ((Date.now() - user_info.last_work))/60000)}m ${60 - Math.floor(((Date.now() - user_info.last_work)%60000)/1000)}s to work.`)
             return
         }
-        user_info.balance = parseInt(user_info.balance) + parseInt(income);
-        await message.reply(job.work_message);
-        redis.sendCommand(["hset", user_id, "balance", user_info.balance, "last_work", Date.now()]);
+        if (!user_info.balance) {
+            user_info.balance = parseInt(income)
+        }
+        else {
+            user_info.balance = parseInt(user_info.balance) + parseInt(income);
+        }
+        message.reply(job.work_message);
+        redis.sendCommand(["hmset", user_id, "balance", user_info.balance, "last_work", Date.now()]);
     }
 }
