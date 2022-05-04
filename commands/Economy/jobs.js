@@ -12,7 +12,7 @@ module.exports = {
             let embed_fields = []
             let job_no = 1
             for (eachjob of jobs) {
-                embed_fields.push({name:`${job_no}. __${eachjob.name}__`, value:`Pay: ${eachjob.income}\nCooldown: ${eachjob.cooldown} minutes\nMinimum net worth: ${eachjob.min_net}\nPrice: ${eachjob.price}`, inline:true});
+                embed_fields.push({name:`${job_no}. __${eachjob.name}__`, value:`Pay: <:tSilver:971385187210502224> ${eachjob.income}\nCooldown: ${eachjob.cooldown} minutes\nMinimum net worth: ${eachjob.min_net}\nPrice: <:tSilver:971385187210502224> ${eachjob.price}`, inline:true});
                 job_no ++
             }
             const jobs_embed = new Discord.MessageEmbed({
@@ -28,7 +28,7 @@ module.exports = {
                 },
                 fields:embed_fields,
                 footer:{
-                    text:"Get a job using __<jobs apply [job_name]__"
+                    text:"Get a job using <jobs apply [job_name]"
                 }
             })
             embeds.push(jobs_embed)
@@ -62,11 +62,11 @@ module.exports = {
                     return
                 }
                 else if (!(user_info.balance >= requested_job.min_net)) {
-                    message.reply(`You don't have enough net worth to apply for this job. You need to have a balance of at least ${requested_job.min_net}.`)
+                    message.reply(`You don't have enough net worth to apply for this job. You need to have a balance of at least <:tSilver:971385187210502224> ${requested_job.min_net}.`)
                     return
                 }
                 else {
-                    message.reply(`You now work as a ${requested_job.name} with a pay of ${requested_job.income} every ${requested_job.cooldown} minutes.`)
+                    message.reply(`You now work as a ${requested_job.name} with a pay of <:tSilver:971385187210502224> ${requested_job.income} every ${requested_job.cooldown} minutes.`)
                     const new_bal = user_info.balance - requested_job.price
                     console.log(new_bal);
                     redis

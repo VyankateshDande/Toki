@@ -1,7 +1,7 @@
 module.exports = {
     name:"work",
     module:"Economy",
-    description:"Work to get some money between 100 to 200",
+    description:"Work you job to get some  <:tSilver:971385187210502224>.",
     async execute(message, args, Discord, bot, axios, database, embeds, redis){
         const jobs = require('./jobs.json')
         const user_id  = message.author.id;
