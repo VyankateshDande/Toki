@@ -8,16 +8,16 @@ module.exports = {
         let user_info = await redis.hGetAll(user_id);
         balance = parseInt(user_info.balance);
         
-        let job
-        for (eachJob of jobs) {
-            if (eachJob.name == user_info.job) {
-                job = eachJob;
+        let job = jobs.find(job => {
+            if (job.name.toLowerCase() == args[1].toLowerCase()){
+                return job
             }
-            if (!job) {
-                job = jobs[0]
-                redis.sendCommand(["hset", user_id, "job", "Potter"])
-            }
+        })
+        if (!job) {
+            job = jobs[0]
+            redis.sendCommand(["hset", user_id, "job", "Potter"])
         }
+        
         const income = job.income
         
         
