@@ -6,7 +6,7 @@ const axios = require('axios');
 const pg = require('pg');
 const { createClient } = require('redis')
 
-const redis = createClient({url:"redis://default:7butPFn6knyslDmceG8I@containers-us-west-46.railway.app:7698"})
+const redis = createClient({url:"redis://default:9BDfemK2uFlpROkf20e4@containers-us-west-48.railway.app:7780"})
 redis.connect()
 
 //Init env variables

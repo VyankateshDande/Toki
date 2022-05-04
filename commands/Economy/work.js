@@ -1,23 +1,23 @@
 module.exports = {
     name:"work",
     module:"Economy",
-    description:"Work to get some money between 100 to 200",
+    description:"Work you job to get some  <:tSilver:971385187210502224>.",
     async execute(message, args, Discord, bot, axios, database, embeds, redis){
         const jobs = require('./jobs.json')
         const user_id  = message.author.id;
         let user_info = await redis.hGetAll(user_id);
         balance = parseInt(user_info.balance);
         
-        let job
-        for (eachJob of jobs) {
-            if (eachJob.name == user_info.job) {
-                job = eachJob;
+        let job = jobs.find(job => {
+            if (job.name == user_info.job){
+                return job
             }
-            if (!job) {
-                job = jobs[0]
-                redis.sendCommand(["hset", user_id, "job", "Potter"])
-            }
+        })
+        if (!job) {
+            job = jobs[0]
+            redis.sendCommand(["hset", user_id, "job", "Potter"])
         }
+        
         const income = job.income
         
         
