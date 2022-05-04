@@ -9,7 +9,7 @@ module.exports = {
         balance = parseInt(user_info.balance);
         
         let job = jobs.find(job => {
-            if (job.name.toLowerCase() == args[1].toLowerCase()){
+            if (job.name == user_info.job){
                 return job
             }
         })
