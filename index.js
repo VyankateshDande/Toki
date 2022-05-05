@@ -6,12 +6,11 @@ const axios = require('axios');
 const pg = require('pg');
 const { createClient } = require('redis')
 
-const redis = createClient({url:"redis://default:9BDfemK2uFlpROkf20e4@containers-us-west-48.railway.app:7780"})
-redis.connect()
-
 //Init env variables
 require('dotenv').config()
 
+const redis = createClient({url:process.env.REDIS_URL})
+redis.connect()
 
 // Constants
 const api_keys = {
@@ -25,9 +24,6 @@ const api_keys = {
     "discordbotlist.com":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0IjoxLCJpZCI6Ijk1ODY0OTgxOTgzMDgyNDk3MCIsImlhdCI6MTY1MTEyNTE5OX0.-p4tBI-WgIs6Nqnd7HHBUjGQNy9H1_f2KJIlodZMajY"
 }
 
-blapi.setLogging({
-    extended:true
-})
 const database = new pg.Pool({
     user: process.env.PGUSER,
     password: process.env.PGPASSWORD,
@@ -38,7 +34,20 @@ const database = new pg.Pool({
 
 
 // Init bot
-const bot = new Discord.Client({intents:["GUILD_MESSAGES", "GUILDS", "GUILD_PRESENCES","GUILD_MEMBERS", "DIRECT_MESSAGES", "GUILD_BANS"]});
+const bot = new Discord.Client({
+    intents:["GUILD_MESSAGES", "GUILDS", "GUILD_PRESENCES","GUILD_MEMBERS", "DIRECT_MESSAGES"],
+    sweepers: {
+        messages: {
+            interval : 30,
+            lifetime: 30
+        }
+    },
+    failIfNotExists: false,
+    allowedMentions: {
+        repliedUser: false,
+        parse: ["users"],
+    }
+});
 bot.valid_cmds = [];
 bot.commands = new Discord.Collection();
 bot.modules = {}
@@ -52,7 +61,7 @@ for (const cmd_module of module_folders){
     bot.modules['modules'].push(cmd_module.toLowerCase())
     for (const file of commandfiles){
         const command = require(`./commands/${cmd_module}/${file}`);
-        bot.commands.set(command.name, command);
+        bot.commands.set(command.name.toLowerCase(), command);
         bot.valid_cmds.push(command.name.toLowerCase());
         bot.modules[`${cmd_module.toLowerCase()}`].push(command.name.toLowerCase())
     }
@@ -73,7 +82,15 @@ const server_data = database
 bot.once('ready', async (Client) => {
     bot.user.setActivity({name:`<help on ${bot.guilds.cache.size} servers`});
     console.log("Ready!");
-    blapi.handle(bot, api_keys, 60)
+    blapi.handle(bot, api_keys, 60);
+    setInterval((bot) => {
+        bot.sweepers.sweepGuildMembers(member => member.id!=bot.user.id);
+        bot.sweepers.sweepPresences(presence => presence);
+        bot.sweepers.sweepReactions(reaction => reaction);
+        bot.sweepers.sweepUsers(user => user.id != bot.user.id);
+        console.log("Sweeped cache");
+    },
+    1800000, bot)
 });
 
 bot.on('messageCreate', (message)=>{
@@ -85,7 +102,7 @@ bot.on('messageCreate', (message)=>{
         prefix = "<"
     }
     if (message.author.bot) return;
-    if (message.mentions.users.has(bot.user.id)){
+    if (message.content.includes('<@958649819830824970>')){
         message.reply(`My prefix for this server is \`${prefix}\`. Do \`${prefix}help\` for more information`)
     }
     if (!message.content.startsWith(prefix)) return;
@@ -110,10 +127,6 @@ bot.on('messageCreate', (message)=>{
         return
     }
     console.log(`[${message.author.username}] in [${message.guild.name}] : ${message.content}\n`);
-    // const announcement = new Discord.MessageEmbed({
-    //     color:"#9966ff",
-    //     description:"You can now set custom prefix! Use `<setprefix` to set custom prefix.\nThis announcement will be shown for 72 hours after which it will be removed."
-    // })
     let embeds = []
 
     bot.commands.get(command).execute(message, args, Discord, bot, axios, database, embeds, redis);
@@ -153,5 +166,3 @@ bot.on("guildDelete", async guild =>{
 
     dm.send(`Server count update: ${bot.guilds.cache.size}(-\`${guild.name}\`)`)
 })
-
-
