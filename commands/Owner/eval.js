@@ -24,7 +24,7 @@ module.exports = {
             else {
                 reply = reply.toString()
             }
-            if (!reply == undefined) {
+            if (!(reply == undefined)) {
                 if (reply.length > 4096) {
                     reply = "The result was too big to be sent. You may find it in the console."
                     console.log(reply);

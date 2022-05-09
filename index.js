@@ -126,7 +126,7 @@ bot.on('messageCreate', (message)=>{
         message.channel.send(`I lack the following permissions to function properly: ${missing_perms}\nMessage history is needed to reply to messages. Toki does not log any messages.`)
         return
     }
-    console.log(`[${message.author.username}] in [${message.guild.name}] : ${message.content}\n`);
+    console.log(`[${message.author.username}] in [${message.guild.name}/${message.channel.name}] : ${message.content}`);
     let embeds = []
 
     bot.commands.get(command).execute(message, args, Discord, bot, axios, database, embeds, redis);

@@ -18,7 +18,8 @@ module.exports = {
             redis.sendCommand(["hset", user_id, "job", "Potter"])
         }
         
-        const income = job.income
+        const multiplier = Math.round(Math.random()) ? 1 - Math.random()/10 : 1 + Math.random()/10
+        const income = Math.round(job.income * multiplier)
         
         
         if ((Date.now() - user_info.last_work) < (job.cooldown * 1000*60)){
@@ -31,7 +32,7 @@ module.exports = {
         else {
             user_info.balance = parseInt(user_info.balance) + parseInt(income);
         }
-        message.reply(job.work_message);
+        message.reply(job.work_message.replace('{income}', income));
         redis.sendCommand(["hmset", user_id, "balance", user_info.balance, "last_work", Date.now()]);
     }
 }
