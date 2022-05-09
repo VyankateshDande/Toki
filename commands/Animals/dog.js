@@ -2,7 +2,7 @@ module.exports = {
     name:"dog",
     module:"Animals",
     description:"Gives a cute picture of a dog and a random dog fact!",
-    async execute(message, args, Discord, bot, axios, database, embeds){
+    async execute(message, args, Discord, bot, axios, embeds){
         let dog_pic
         const dog_pic_req = await axios.get('https://some-random-api.ml/animal/dog')
         if (dog_pic_req.link) {

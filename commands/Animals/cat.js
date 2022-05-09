@@ -2,7 +2,7 @@ module.exports = {
     name:"cat",
     module:"Animals",
     description:"Gives a cute picture of a cat and a random cat fact!",
-    async execute(message, args, Discord, bot, axios, database, embeds){
+    async execute(message, args, Discord, bot, axios, embeds){
         const cat_pic_req = await axios.get(('https://some-random-api.ml/animal/cat'))
         if (cat_pic_req.data.image == undefined){
             message.reply("Something went wrong. Try again later.")

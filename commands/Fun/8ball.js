@@ -2,7 +2,7 @@ module.exports = {
     name:"8ball",
     module:"Fun",
     description:"Let the bot decide your fate",
-    execute(message, args, Discord, bot, axios, database, embeds){
+    execute(message, args, Discord, bot, axios, embeds){
         for (i in args){
             if (args[i] == args[0]) continue
             args[0] += ` ${args[i]}`
@@ -11,8 +11,8 @@ module.exports = {
             message.reply("You need to ask a question for me to decide.")
             return
         }
-        const fate = Math.floor(Math.random()*3)
-        const answer_no = Math.floor(Math.random()*5)
+        const fate = Math.round(Math.random()*2)
+        const answer_no = Math.round(Math.random()*4)
         const choices = [
             ["It is certain.", "Yes, definitely.", "Most likely.", "As I see it, yes.", "Without a doubt."],
             ["Can not predit now.", "Concentrate and ask again.", "Better not tell you now.", "Ask again later.", "Reply hazy, try again."],
@@ -20,7 +20,6 @@ module.exports = {
         ]
         const colours = ["#00cc00", "#ffcc00", "#ff0000"]
         let response = choices[fate][answer_no]
-        if (!response) response = "Hmm. You will have to decide this by yourself. What do you think?"
         const ball_embed = new Discord.MessageEmbed({
             author:{
                 name:`Q: ${args[0].toString()}`

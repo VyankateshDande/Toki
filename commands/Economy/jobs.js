@@ -2,7 +2,7 @@ module.exports = {
     name:"jobs",
     module:"Economy",
     description:"Get information about jobs.",
-    async execute(message, args, Discord, bot, axios, database, embeds, redis) {
+    async execute(message, args, Discord, bot, axios, embeds, redis) {
         const jobs = require('./jobs.json');
         const joblist = []
         for (i of jobs) {
@@ -51,7 +51,7 @@ module.exports = {
                 return
             }
             else {
-                const user_info = await redis.hGetAll(message.author.id)
+                const user_info = await redis.hGetAll(`user:${message.author.id}`)
                 const requested_job = jobs.find(job => {
                     if (job.name.toLowerCase() == args[1].toLowerCase()){
                         return job
@@ -71,8 +71,9 @@ module.exports = {
                     console.log(new_bal);
                     redis
                         .multi()
-                        .hSet(message.author.id, "job", requested_job.name)
-                        .hSet(message.author.id, "balance", new_bal)
+                        .hSet(`user:${message.author.id}`, "job", requested_job.name)
+                        .hSet(`user:${message.author.id}`, "balance", new_bal)
+                        .zIncrBy('lb', -requested_job.price*0.7, message.author.id)
                         .exec();
                 }
             }

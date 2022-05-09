@@ -2,7 +2,7 @@ module.exports = {
     name:"setStatus",
     module:"Owner",
     description:"Set the bot's status.",
-    execute (message, args, Discord, bot, axios, database, embeds, redis) {
+    execute (message, args, Discord, bot, axios, embeds, redis) {
         if (message.author.id != 912351813041262662n){
             return
         }

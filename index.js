@@ -3,7 +3,6 @@ const Discord = require('discord.js');
 const blapi = require('blapi')
 const fs = require('fs');
 const axios = require('axios');
-const pg = require('pg');
 const { createClient } = require('redis')
 
 //Init env variables
@@ -23,14 +22,6 @@ const api_keys = {
     "bots.discordlabs.org":"discordlabs.org-Qn2GoEioboHtWBznTvII",
     "discordbotlist.com":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0IjoxLCJpZCI6Ijk1ODY0OTgxOTgzMDgyNDk3MCIsImlhdCI6MTY1MTEyNTE5OX0.-p4tBI-WgIs6Nqnd7HHBUjGQNy9H1_f2KJIlodZMajY"
 }
-
-const database = new pg.Pool({
-    user: process.env.PGUSER,
-    password: process.env.PGPASSWORD,
-    host: process.env.PGHOST,
-    database: process.env.PGDATABASE,
-    port: process.env.PGPORT
-})
 
 
 // Init bot
@@ -68,15 +59,15 @@ for (const cmd_module of module_folders){
 }
 
 bot.server_info = new Discord.Collection();
-const server_data = database
-    .query("SELECT * FROM server_info")
-    .then(data => {
-        for (i in data.rows){
-            bot.server_info.set(data.rows[i].server_id, data.rows[i])
+redis.keys('server:*')
+    .then( async (keys) => {
+        for (id of keys) {
+            const server_data = await redis.hGetAll(id)
+            bot.server_info.set(id.slice(7), server_data)
         }
-        bot.login(process.env.TOKEN);
+        console.log(bot.server_info)
+        bot.login(process.env.TOKEN)
     })
-    .catch(err => {console.error(err);});
 
 // Bot code
 bot.once('ready', async (Client) => {
@@ -102,7 +93,7 @@ bot.on('messageCreate', (message)=>{
         prefix = "<"
     }
     if (message.author.bot) return;
-    if (message.content.includes('<@958649819830824970>')){
+    if (message.content.includes(`<@${bot.user.id}>`)){
         message.reply(`My prefix for this server is \`${prefix}\`. Do \`${prefix}help\` for more information`)
     }
     if (!message.content.startsWith(prefix)) return;
@@ -129,14 +120,14 @@ bot.on('messageCreate', (message)=>{
     console.log(`[${message.author.username}] in [${message.guild.name}/${message.channel.name}] : ${message.content}`);
     let embeds = []
 
-    bot.commands.get(command).execute(message, args, Discord, bot, axios, database, embeds, redis);
+    bot.commands.get(command).execute(message, args, Discord, bot, axios, embeds, redis);
 });
 
 bot.on('guildCreate', (guild)=>{
     bot.user.setActivity({name:`<help on ${bot.guilds.cache.size} servers`})
     bot.server_info.set(guild.id, {server_id:guild.id,prefix:"<",})
-    database
-        .query("INSERT INTO server_info (server_id) VALUES($1)", [guild.id])
+    redis
+        .hSet(`server:${guild.id}`, "prefix", "<")
         .then(console.log(`Server count update: ${bot.guilds.cache.size}(+\`${guild.name}\`)`))
         .catch(err =>{console.error(err)});
     bot.users
@@ -157,8 +148,8 @@ bot.on('guildCreate', (guild)=>{
 
 bot.on("guildDelete", async guild =>{
     bot.user.setActivity({name:`<help on ${bot.guilds.cache.size} servers`})
-    database
-        .query("DELETE FROM server_info WHERE server_id=$1", [guild.id])
+    redis
+        .del(`server:${guild.id}`)
         .then(console.log(`Server count update: ${bot.guilds.cache.size}(-\`${guild.name}\`)`))
         .catch(e =>{console.error(err)});
     const owner = await bot.users.fetch('912351813041262662')

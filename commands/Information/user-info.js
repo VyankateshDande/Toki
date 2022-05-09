@@ -2,7 +2,7 @@ module.exports = {
     name: 'user-info',
     module:"Information",
     description:"Gives information about specified user or about the author if no user is specified.",
-    async execute(message,args, Discord, bot, axios, database, embeds) {
+    async execute(message,args, Discord, bot, axios, embeds) {
         let user
         for (i in args){
             if (args[0] == args[i]) continue;

@@ -4,7 +4,7 @@ module.exports = {
     name:"role-info",
     module:"Information",
     description:"Gives information related to a role.",
-    async execute(message, args, Discord, bot, axios, database, embeds){
+    async execute(message, args, Discord, bot, axios, embeds){
         let guild = message.guild;
 
         if (!guild.me.permissions.toArray().includes("MANAGE_ROLES")){

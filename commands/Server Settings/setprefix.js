@@ -2,7 +2,7 @@ module.exports = {
     name:"setprefix",
     module:"Server settings",
     description:"Set a custom prefix for your server.",
-    async execute(message, args, Discord, bot, axios, database, announcement){
+    async execute(message, args, Discord, bot, axios, embeds, redis){
 
         if (!args[0]){
             message.reply("You must specify a prefix!")
@@ -13,8 +13,8 @@ module.exports = {
             return
         }
         else if (message.member.permissions.has("MANAGE_GUILD")){
-            database
-                .query("UPDATE server_info SET prefix=$1 WHERE server_id = $2", [args[0], message.guild.id])
+            redis
+                .hSet(`server:${message.guild.id}`, "prefix", args[0])
                 .then((data)=>{
                     console.log(`Set prefix to [${args[0]}] in [${message.guild.name}]\n`)
                     message.reply(`The prefix for this server is set to \`${args[0]}\`.`)

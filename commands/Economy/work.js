@@ -2,10 +2,10 @@ module.exports = {
     name:"work",
     module:"Economy",
     description:"Work you job to get some  <:tSilver:971385187210502224>.",
-    async execute(message, args, Discord, bot, axios, database, embeds, redis){
+    async execute(message, args, Discord, bot, axios, embeds, redis){
         const jobs = require('./jobs.json')
         const user_id  = message.author.id;
-        let user_info = await redis.hGetAll(user_id);
+        let user_info = await redis.hGetAll(`user:${user_id}`);
         balance = parseInt(user_info.balance);
         
         let job = jobs.find(job => {
@@ -15,7 +15,7 @@ module.exports = {
         })
         if (!job) {
             job = jobs[0]
-            redis.sendCommand(["hset", user_id, "job", "Potter"])
+            redis.sendCommand(["hset", `user:${user_id}`, "job", "Potter"])
         }
         
         const multiplier = Math.round(Math.random()) ? 1 - Math.random()/10 : 1 + Math.random()/10
@@ -28,11 +28,13 @@ module.exports = {
         }
         if (!user_info.balance) {
             user_info.balance = parseInt(income)
+            redis.sendCommand(['ZADD', 'lb', 0, user_id]);
         }
         else {
             user_info.balance = parseInt(user_info.balance) + parseInt(income);
         }
         message.reply(job.work_message.replace('{income}', income));
-        redis.sendCommand(["hmset", user_id, "balance", user_info.balance, "last_work", Date.now()]);
+        redis.sendCommand(["hmset", `user:${user_id}`, "balance", user_info.balance, "last_work", Date.now()]);
+        redis.sendCommand(['ZINCRBY', 'lb', income, user_id]);
     }
 }

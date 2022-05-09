@@ -4,7 +4,7 @@ module.exports = {
     name : "math",
     module : "Miscellaneous",
     description : "Solves math for you",
-    execute (message, args, Discord, bot, axios, database, embeds, redis) {
+    execute (message, args, Discord, bot, axios, embeds, redis) {
         if ( ! args[0] ) {
             message.reply("You need to tell me what to solve as well...")
             return

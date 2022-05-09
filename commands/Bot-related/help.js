@@ -2,7 +2,7 @@ module.exports = {
     name:"help",
     module:"Bot-related Information",
     description:"Provides informationa about the commands present in the bot.",
-    execute(message, args, Discord, bot, axios, database, embeds){
+    execute(message, args, Discord, bot, axios, embeds){
         let embed_fields = []
         for (i in args){
             if (args[0] == args[i]) continue

@@ -1,6 +1,6 @@
 {
   "name": "toki",
-  "version": "1.2.2",
+  "version": "2.0.0",
   "description": "A discord bot with a fun game and other features!",
   "main": "index.js",
   "scripts": {
@@ -28,7 +28,6 @@
     "dotenv": "^16.0.0",
     "mathjs": "^10.5.1",
     "node-fetch": "^3.2.3",
-    "pg": "^8.7.3",
     "redis": "^4.0.6"
   }
 }

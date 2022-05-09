@@ -2,7 +2,7 @@ module.exports = {
     name:"eval",
     module:"Owner",
     description:"Runs the given JS code and returns output",
-    execute(message, args, Discord, bot, axios, database, embeds, redis){
+    async execute(message, args, Discord, bot, axios, embeds, redis){
         if (message.author.id != 912351813041262662n) {
             return
         }

@@ -2,7 +2,7 @@ module.exports = {
     name:"server-info",
     module:"Information",
     description:"Provides information about the server",
-    execute(message, args, Discord, bot, axios, database, embeds){
+    execute(message, args, Discord, bot, axios, embeds){
         const guild = message.guild;
         let guild_desc = guild.description;
         if (!guild_desc) guild_desc = "Not set";

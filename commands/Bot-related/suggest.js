@@ -2,7 +2,7 @@ module.exports = {
     name: "suggest",
     module: "Bot-related Information",
     description: "Suggest a feature to the bot developer!",
-    async execute (message, args, Discord, bot, axios, database, embeds, redis) {
+    async execute (message, args, Discord, bot, axios, embeds, redis) {
         for (i in args) {
             if (args[i] == args[0]) continue;
             args[0] += ` ${args[i]}`;
